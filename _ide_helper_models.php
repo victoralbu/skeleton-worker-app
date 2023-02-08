@@ -70,11 +70,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereMembersNr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  */
 	class Group extends \Eloquent {}
 }
@@ -120,11 +115,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereUrgency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereWinnerId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo> $photos
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo> $photos
  */
 	class Job extends \Eloquent {}
 }
@@ -228,23 +218,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $accusations
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groupsModerating
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $accusations
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groupsModerating
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  */
 	class User extends \Eloquent {}
 }

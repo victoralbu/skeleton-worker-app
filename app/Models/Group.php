@@ -32,10 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereMembersNr($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Group whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Job> $jobs
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+
  * @mixin \Eloquent
  */
 class Group extends Model

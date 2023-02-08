@@ -45,10 +45,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereUrgency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Job whereWinnerId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo> $photos
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Bid> $bids
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Photo> $photos
  * @mixin \Eloquent
  */
 class Job extends Model
@@ -83,12 +79,12 @@ class Job extends Model
         return $this->belongsTo(User::class, 'winner_id');
     }
 
-    public function bids()
+    public function bids(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Bid::class);
     }
 
-    public function photos()
+    public function photos(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Photo::class);
     }
