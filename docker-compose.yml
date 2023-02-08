@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+    mysql:
+        image: mysql:8.0.25
+        container_name: mysql
+        environment:
+            MYSQL_DATABASE: licenta
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: user
+            MYSQL_PASSWORD: secret
+        command: [ "--default-authentication-plugin=mysql_native_password" ]
+        ports:
+            - 3382:3306
+        volumes:
+            - mysql:/data/mysql
+
+        networks:
+            - mysql
+
+volumes:
+    mysql:
+        driver: local
+
+networks:
+    mysql:
+        driver: bridge
