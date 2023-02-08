@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TokenFormRequest;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\JsonResponse;
 
 class LoginController extends Controller
