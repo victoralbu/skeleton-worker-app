@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->dateTime('date');
             $table->float('money');
-            $table->text('few_words');
+            $table->text('few_words')->nullable();
             $table->enum('status', ['Won', 'In Progress', 'Lost'])->default('In Progress');
             $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Job::class);

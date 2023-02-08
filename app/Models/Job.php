@@ -61,7 +61,9 @@ class Job extends Model
         'address',
         'urgency',
         'status',
-        'winner'
+        'user_id',
+        'winner_id',
+        'group_id',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description');
             $table->foreignIdFor(\App\Models\User::class, 'admin_id');
             $table->integer('members_nr')->default(1);
             $table->string('invite_code');

@@ -24,7 +24,8 @@ class UserFactory extends Factory
             'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'phone_number'      => fake()->unique()->phoneNumber(),
             'jobs_done'         => rand(0, 200),
-            'rating'            => fake()->randomFloat(2,1,5),
+            'rating'            => fake()->randomFloat(2, 1, 5),
+            'ratings_nr'        => rand(1, 100),
             'role'              => fake()->randomElement(['User', 'Worker', 'Admin']),
             'remember_token'    => Str::random(10),
         ];

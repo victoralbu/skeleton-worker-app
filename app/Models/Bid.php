@@ -44,6 +44,9 @@ class Bid extends Model
         'date',
         'money',
         'few_words',
+        'user_id',
+        'job_id',
+        'status',
     ];
     protected $casts    = [
         'date' => 'datetime',

@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('address');
             $table->enum('urgency', ['Very Urgent', 'Urgent', 'Not Urgent'])->default('Urgent');
             $table->foreignIdFor(\App\Models\User::class);
-            $table->foreignIdFor(\App\Models\Group::class);
-            $table->foreignIdFor(\App\Models\User::class, 'winner_id');
+            $table->foreignIdFor(\App\Models\Group::class)->nullable();
+            $table->foreignIdFor(\App\Models\User::class, 'winner_id')->nullable();
             $table->enum('status', ['Done', 'In Progress', 'Bidding'])->default('Bidding');
             $table->timestamps();
         });

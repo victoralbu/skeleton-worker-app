@@ -43,6 +43,10 @@ class Group extends Model
 
     protected $fillable = [
         'name',
+        'description',
+        'admin_id',
+        'invite_code',
+        'members_nr',
     ];
 
     public function admin(): BelongsTo

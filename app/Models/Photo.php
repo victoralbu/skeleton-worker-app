@@ -32,7 +32,8 @@ class Photo extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'image'
+        'image',
+        'job_id'
     ];
 
     public function job()

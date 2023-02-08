@@ -18,6 +18,7 @@ class GroupFactory extends Factory
     {
         return [
             'name'        => fake()->name(),
+            'description' => fake()->text(20),
             'admin_id'    => fake()->numberBetween(1, 10),
             'members_nr'  => fake()->numberBetween(1, 10),
             'invite_code' => fake()->unique()->text(20),
