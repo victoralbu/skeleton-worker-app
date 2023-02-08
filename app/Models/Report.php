@@ -36,7 +36,8 @@ class Report extends Model
 
     protected $fillable = [
       'description',
-      'culprit_id'
+      'culprit_id',
+      'plaintiff_id'
     ];
 
     public function plaintiff()
