@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', [RegisterController::class, 'register']);
 Route::post('/auth/token', [LoginController::class, 'token']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/me', function (Request $request): UserResource {
-        return new UserResource($request->user());
-    });
+Route::middleware(['auth:sanctum'])->group(function () {
+//    Route::get('/me', function (Request $request): UserResource {
+//        return new UserResource($request->user());
+//    });
 
     Route::resource('groups', GroupController::class);
 
@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('bids', BidController::class);
 
     Route::resource('reports', ReportController::class);
-});
 
-Route::get('/test', function () {
-    return new JobResource(Job::find(1));
+    Route::post('/validate', function (){
+        return response()->json(['message' => 'valid']);
+    });
 });
 
