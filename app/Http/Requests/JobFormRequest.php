@@ -25,6 +25,7 @@ class JobFormRequest extends FormRequest
             'level'       => ['string', 'max:255', Rule::in(['Easy', 'Medium', 'Hard']), 'required'],
             'budget'      => ['decimal:0,2'],
             'address'     => ['string', 'max:255', 'required'],
+            'city'        => ['string', 'max:255', 'required'],
             'urgency'     => ['string', 'max:255', Rule::in(['Very Urgent', 'Urgent', 'Not Urgent']), 'required'],
             'group_id'    => ['string', 'max:255', 'exists:groups,id'],
             'status'      => ['string', 'max:255', Rule::in(['Done', 'In Progress', 'Bidding'])],

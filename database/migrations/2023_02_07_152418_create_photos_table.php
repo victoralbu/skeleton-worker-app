@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
-            $table->binary('image');
+            $table->string('image');
             $table->foreignIdFor(\App\Models\Job::class);
             $table->timestamps();
         });

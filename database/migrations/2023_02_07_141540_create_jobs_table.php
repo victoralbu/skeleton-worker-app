@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->enum('level', ['Easy', 'Medium', 'Hard'])->default('Medium');
             $table->float('budget')->nullable();
             $table->string('address');
+            $table->string('city');
             $table->enum('urgency', ['Very Urgent', 'Urgent', 'Not Urgent'])->default('Urgent');
             $table->foreignIdFor(\App\Models\User::class);
             $table->foreignIdFor(\App\Models\Group::class)->nullable();

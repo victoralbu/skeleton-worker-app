@@ -17,11 +17,12 @@ class JobFactory extends Factory
     public function definition()
     {
         return [
-            'title'       => fake()->title,
+            'title'       => fake()->colorName,
             'description' => fake()->realText,
             'level'       => fake()->randomElement(['Easy', 'Medium', 'Hard']),
-            'budget'      => fake()->randomFloat(2, 1,100),
+            'budget'      => fake()->randomFloat(2, 1, 100),
             'address'     => fake()->address,
+            'city'        => fake()->city,
             'urgency'     => fake()->randomElement(['Very Urgent', 'Urgent', 'Not Urgent']),
             'user_id'     => rand(1, 10),
             'group_id'    => rand(1, 10),

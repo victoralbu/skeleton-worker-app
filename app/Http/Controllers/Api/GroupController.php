@@ -7,6 +7,7 @@ use App\Http\Requests\GroupFormRequest;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
@@ -27,12 +28,38 @@ class GroupController extends Controller
             'members_nr'  => 1,
         ]);
 
+        $group->users()->attach($request->user());
+
         return response()->json(new GroupResource($group));
     }
 
     public function show(Group $group): JsonResponse
     {
         return response()->json(new GroupResource($group));
+    }
+
+    public function destroy(Group $group): JsonResponse
+    {
+        $group->delete();
+
+        return response()->json(['delete' => 'successful']);
+    }
+
+    public function join(Group $group, Request $request): JsonResponse
+    {
+        if ($request->user()->id === $group->admin->id)
+            return response()->json(['error' => 'You are the owner!']);
+
+        if ($request->get('invite_code') !== $group->invite_code)
+            return response()->json(['error' => 'Incorrect invite code!']);
+
+        $group->update([
+            'members_nr' => $group->members_nr + 1,
+        ]);
+
+        $group->users()->attach($request->user());
+
+        return response()->json(['status' => 'successful']);
     }
 
     public function update(GroupFormRequest $request, Group $group): JsonResponse
@@ -45,10 +72,12 @@ class GroupController extends Controller
         return response()->json($group);
     }
 
-    public function destroy(Group $group): JsonResponse
+    public function myGroups(Group $group, Request $request): JsonResponse
     {
-        $group->delete();
+        $user = $request->user();
 
-        return response()->json(['delete' => 'successful']);
+        $groups = GroupResource::collection($user->groups);
+
+        return response()->json($groups);
     }
 }

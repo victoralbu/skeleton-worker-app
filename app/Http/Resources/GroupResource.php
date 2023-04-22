@@ -14,6 +14,7 @@ class GroupResource extends JsonResource
             'admin'       => new UserResource($this->admin),
             'members_nr'  => $this->members_nr,
             'invite_code' => $this->invite_code,
+            'jobs'        => JobResource::collection($this->jobs)
         ];
     }
 }

@@ -64,6 +64,7 @@ class Job extends Model
         'user_id',
         'winner_id',
         'group_id',
+        'city',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -73,7 +74,7 @@ class Job extends Model
 
     public function group(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Group::class, 'group_id');
     }
 
     public function winner(): \Illuminate\Database\Eloquent\Relations\BelongsTo
