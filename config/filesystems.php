@@ -32,7 +32,7 @@ return [
 
         'frontend' => [
           'driver' => 'local',
-          'root' => storage_path('../../../testFrontendLicenta/nuxt-app/public/assets/images'),
+          'root' => storage_path('../../../testFrontendLicenta/public/assets/images'),
           'throw' => false,
         ],
 

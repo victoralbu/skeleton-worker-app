@@ -7,9 +7,9 @@ use App\Http\Requests\JobFormRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
 use App\Models\Photo;
-use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class JobController extends Controller
 {
@@ -46,12 +46,17 @@ class JobController extends Controller
 
                 $name = $image->getFilename() . $request->user()->id . '.' . $image->extension();
 
+                $image = Image::make($image->getRealpath());
+
+                $image->orientate();
+
                 Photo::create([
                     'image'  => '/assets/images/' . $name,
                     'job_id' => $job->id,
                 ]);
 
-                $image->storeAs('', $name, ['disk' => 'frontend']);
+                $image->save('../../../testFrontendLicenta/public/assets/images/'.$name,100);
+
             }
         }
 
