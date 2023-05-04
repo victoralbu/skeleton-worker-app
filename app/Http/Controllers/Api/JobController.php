@@ -17,7 +17,9 @@ class JobController extends Controller
     {
         $lastJob = $request->get('lastPost') ?: PHP_INT_MAX;
 
-        $jobs = JobResource::collection(Job::orderBy('id', 'desc')->take(10)->where('id', '<', $lastJob)->get());
+        $city = $request->get('city') ?: 'Brasov';
+
+        $jobs = JobResource::collection(Job::orderBy('id', 'desc')->take(10)->where('id', '<', $lastJob)->where('city', '=', $city)->get());
 
         return response()->json($jobs);
     }
@@ -55,7 +57,7 @@ class JobController extends Controller
                     'job_id' => $job->id,
                 ]);
 
-                $image->save('../../../testFrontendLicenta/public/assets/images/'.$name,100);
+                $image->save('../../../testFrontendLicenta/public/assets/images/' . $name, 100);
 
             }
         }
