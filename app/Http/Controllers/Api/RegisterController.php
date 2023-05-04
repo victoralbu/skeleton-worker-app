@@ -20,11 +20,10 @@ class RegisterController extends Controller
             'password'     => Hash::make($request->get('password')),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        \Auth::attempt($request->only('email', 'password'));
 
         return response()->json([
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-        ], 201);
+            'status' => 'valid',
+        ]);
     }
 }
