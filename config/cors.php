@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://zeusv.go.ro:3001','*'],
 
     'allowed_origins_patterns' => [],
 
