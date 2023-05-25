@@ -24,6 +24,15 @@ class JobController extends Controller
         return response()->json($jobs);
     }
 
+    public function myPosts(Request $request): JsonResponse
+    {
+        $lastJob = $request->get('lastPost') ?: PHP_INT_MAX;
+
+        $jobs = JobResource::collection(Job::orderBy('id', 'desc')->take(10)->where('id', '<', $lastJob)->where('user_id', "=", $request->user()->id)->get());
+
+        return response()->json($jobs);
+    }
+
     public function store(JobFormRequest $request): JsonResponse
     {
         $job = Job::create([

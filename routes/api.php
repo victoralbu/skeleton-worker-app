@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BidController;
+use App\Http\Controllers\Api\ForgotPassword;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\LoginController;
@@ -12,11 +13,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/register', [RegisterController::class, 'register']);
+
 Route::post('/auth/token', [LoginController::class, 'token']);
+
+Route::post('/auth/forgot-password', [ForgotPassword::class, 'index'])->name('password.reset');
+
+Route::post('/auth/reset-password', [ForgotPassword::class, 'reset']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', static function (Request $request): JsonResponse {
         return response()->json(new UserResource($request->user()));
+    });
+
+    Route::post('/auth/logout', static function () {
+        Auth::guard('web')->logout();
     });
 
     Route::post('groups/join/{group}', [GroupController::class, 'join']);
@@ -26,6 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('groups', GroupController::class);
 
     Route::resource('jobs', JobController::class)->withoutMiddleware("throttle:api");
+
+    Route::get('myPosts', [JobController::class, 'myPosts'])->withoutMiddleware("throttle:api");
 
     Route::resource('bids', BidController::class);
 
