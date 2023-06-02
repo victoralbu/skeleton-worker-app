@@ -7,6 +7,7 @@ use App\Http\Requests\JobFormRequest;
 use App\Http\Resources\JobResource;
 use App\Models\Job;
 use App\Models\Photo;
+use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -19,7 +20,13 @@ class JobController extends Controller
 
         $city = $request->get('city') ?: 'Brasov';
 
-        $jobs = JobResource::collection(Job::orderBy('id', 'desc')->take(10)->where('id', '<', $lastJob)->where('city', '=', $city)->get());
+        $jobs = JobResource::collection(Job::orderBy('id', 'desc')
+                                           ->take(10)
+                                           ->where('id', '<', $lastJob)
+                                           ->where('city', '=', $city)
+                                           ->where('group_id', '=', null)
+                                           ->where('winner_id', '=', null)
+                                           ->get());
 
         return response()->json($jobs);
     }
@@ -28,9 +35,35 @@ class JobController extends Controller
     {
         $lastJob = $request->get('lastPost') ?: PHP_INT_MAX;
 
-        $jobs = JobResource::collection(Job::orderBy('id', 'desc')->take(10)->where('id', '<', $lastJob)->where('user_id', "=", $request->user()->id)->get());
+        $jobs = JobResource::collection(Job::orderBy('id', 'desc')
+                                           ->take(10)
+                                           ->where('id', '<', $lastJob)
+                                           ->where('user_id', "=", $request->user()->id)
+                                           ->get());
 
         return response()->json($jobs);
+    }
+
+    public function groupPosts(Request $request): JsonResponse
+    {
+        if (!Auth::user()->groups->contains($request->get('group')))
+            return response()->json(['status' => 'Forbidden']);
+
+        $lastJob = $request->get('lastPost') ?: PHP_INT_MAX;
+
+        $jobs = JobResource::collection(Job::orderBy('id', 'desc')
+                                           ->take(10)
+                                           ->where('id', '<', $lastJob)
+                                           ->where('group_id', "=", $request->get('group'))
+                                           ->where('winner_id', '=', null)
+                                           ->get());
+
+        return response()->json($jobs);
+    }
+
+    public function win(Request $request)
+    {
+
     }
 
     public function store(JobFormRequest $request): JsonResponse
@@ -74,8 +107,9 @@ class JobController extends Controller
         return response()->json(new JobResource($job));
     }
 
-    public function show(Job $job): JsonResponse
+    public function show($id)
     {
+        $job = Job::where('id', $id)->firstOrFail();
         return response()->json(new JobResource($job));
     }
 

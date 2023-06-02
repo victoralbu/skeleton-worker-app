@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Auth::guard('web')->logout();
     });
 
-    Route::post('groups/join/{group}', [GroupController::class, 'join']);
+    Route::post('groups/join', [GroupController::class, 'join']);
 
     Route::get('groups/myGroups', [GroupController::class, 'myGroups']);
 
@@ -38,6 +38,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('jobs', JobController::class)->withoutMiddleware("throttle:api");
 
     Route::get('myPosts', [JobController::class, 'myPosts'])->withoutMiddleware("throttle:api");
+
+    Route::get('groupPosts', [JobController::class, 'groupPosts'])->withoutMiddleware("throttle:api");
+
+    Route::get('bids/{id}', [BidController::class, 'jobBids'])->withoutMiddleware("throttle:api");
+
+    Route::post('bids/win', [BidController::class, 'win']);
 
     Route::resource('bids', BidController::class);
 

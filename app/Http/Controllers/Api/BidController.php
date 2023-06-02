@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BidFormRequest;
 use App\Http\Resources\BidResource;
 use App\Models\Bid;
+use App\Models\Job;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 
 class BidController extends Controller
 {
@@ -17,8 +20,47 @@ class BidController extends Controller
         return response()->json($bids);
     }
 
+    public function jobBids($id): JsonResponse
+    {
+        $bids = BidResource::collection(Job::findOrFail($id)->bids()->orderBy('id','asc')->get());
+
+        return response()->json($bids);
+
+    }
+
+    public function win(Request $request): JsonResponse
+    {
+        $bid = Bid::findOrFail($request->get('bid'));
+
+        $job = $bid->job;
+
+        $jobsBids = $job->bids;
+
+        foreach ($jobsBids as $lostBid)
+        {
+            $lostBid->update(['status' => 'Lost']);
+            $lostBid->save();
+        }
+
+        $job->update(['winner_id' => $bid->user_id]);
+        $job->save();
+
+        $bid->update([
+            'status' => 'Won'
+        ]);
+        $bid->save();
+
+        return response()->json(['status' => 'good']);
+    }
+
     public function store(BidFormRequest $request): JsonResponse
     {
+        $job = Job::findOrFail($request->get('job_id'));
+
+        if ($job->bids->contains('user_id', '=', $request->user()->id)) {
+            return response()->json(['status' => 'You already have a bid!']);
+        }
+
         $bid = Bid::create([
             'job_id'    => $request->get('job_id'),
             'date'      => $request->get('date'),
@@ -26,6 +68,7 @@ class BidController extends Controller
             'few_words' => $request->get('few_words'),
             'user_id'   => $request->user()->id,
             'status'    => 'In Progress',
+
 
         ]);
 

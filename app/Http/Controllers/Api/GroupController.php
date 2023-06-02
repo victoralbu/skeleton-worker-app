@@ -8,12 +8,14 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
     public function index(): JsonResponse
     {
-        $groups = GroupResource::collection(Group::orderBy('id', 'asc')->get());
+        $groups = GroupResource::collection(\Auth::user()->groups);
 
         return response()->json($groups);
     }
@@ -24,7 +26,7 @@ class GroupController extends Controller
             'name'        => $request->get('name'),
             'description' => $request->get('description'),
             'admin_id'    => $request->user()->id,
-            'invite_code' => $request->user()->id . fake()->unique()->text(5) . random_int(1, 1000),
+            'invite_code' => $request->user()->id . Str::random(5) . random_int(1, 1000),
             'members_nr'  => 1,
         ]);
 
@@ -45,13 +47,15 @@ class GroupController extends Controller
         return response()->json(['delete' => 'successful']);
     }
 
-    public function join(Group $group, Request $request): JsonResponse
+    public function join(Request $request): JsonResponse
     {
-        if ($request->user()->id === $group->admin->id)
+        $group = Group::where('invite_code', '=', $request->get('invite_code'))->first();
+
+        if ($request->user()->id === $group->admin_id)
             return response()->json(['error' => 'You are the owner!']);
 
-        if ($request->get('invite_code') !== $group->invite_code)
-            return response()->json(['error' => 'Incorrect invite code!']);
+//        if ($request->get('invite_code') !== $group->invite_code)
+//            return response()->json(['error' => 'Incorrect invite code!']);
 
         $group->update([
             'members_nr' => $group->members_nr + 1,
