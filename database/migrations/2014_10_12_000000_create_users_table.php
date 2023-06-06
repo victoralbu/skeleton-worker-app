@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->integer('jobs_done')->default(0);
             $table->float('rating')->default(0);
             $table->integer('ratings_nr')->default(0);
+            $table->json('ratings')->nullable();
             $table->enum('role', ['User', 'Worker', 'Admin'])->default('User');
             $table->rememberToken();
             $table->timestamps();

@@ -182,6 +182,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -211,7 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
     ])->toArray(),
 
 ];

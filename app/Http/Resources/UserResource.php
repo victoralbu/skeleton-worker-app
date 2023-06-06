@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'rating'       => $this->rating,
             'ratings_nr'   => $this->ratings_nr,
             'role'         => $this->role,
+            'status'       => $this->status,
         ];
     }
 }

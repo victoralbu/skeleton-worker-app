@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobFormRequest;
 use App\Http\Resources\JobResource;
+use App\Models\Group;
 use App\Models\Job;
 use App\Models\Photo;
 use Auth;
@@ -61,14 +62,33 @@ class JobController extends Controller
         return response()->json($jobs);
     }
 
-    public function win(Request $request)
+    public function myJobs(Request $request): JsonResponse
     {
+        $jobs = Job::where('winner_id','=', $request->user()->id)->get();
 
+       return response()->json($jobs);
+    }
+
+    public function finishJob(Request $request):JsonResponse
+    {
+        $job = Job::where('id','=',$request->get('job_id'));
+
+        $job->update(['status' => 'Done']);
+
+        return response()->json(['status' => 'good']);
+    }
+
+    public function paid(Request $request)
+    {
+        $job = Job::where('id','=', $request->get('job_id'));
+        $job->update(['status' => 'Paid']);
+
+        return response()->json(['status' => 'good']);
     }
 
     public function store(JobFormRequest $request): JsonResponse
     {
-        $job = Job::create([
+        $payload = [
             'title'       => $request->get('title'),
             'description' => $request->get('description'),
             'level'       => $request->get('level'),
@@ -77,10 +97,15 @@ class JobController extends Controller
             'city'        => $request->get('city'),
             'urgency'     => $request->get('urgency'),
             'user_id'     => $request->user()->id,
-            'group_id'    => $request->get('group_id'),
             'winner_id'   => $request->get('winner_id'),
-            'status'      => 'Bidding',
-        ]);
+            'status'      => 'Bidding'
+        ];
+
+        if ($request->get('group_id') !== "null")
+            if (Group::findOrFail($request->get('group_id')))
+                $payload['group_id'] = $request->get('group_id');
+
+        $job = Job::create($payload);
 
         if ($request->allFiles() !== null) {
 

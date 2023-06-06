@@ -8,7 +8,6 @@ use App\Http\Resources\GroupResource;
 use App\Models\Group;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class GroupController extends Controller
@@ -53,9 +52,6 @@ class GroupController extends Controller
 
         if ($request->user()->id === $group->admin_id)
             return response()->json(['error' => 'You are the owner!']);
-
-//        if ($request->get('invite_code') !== $group->invite_code)
-//            return response()->json(['error' => 'Incorrect invite code!']);
 
         $group->update([
             'members_nr' => $group->members_nr + 1,

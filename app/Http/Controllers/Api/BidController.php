@@ -22,7 +22,7 @@ class BidController extends Controller
 
     public function jobBids($id): JsonResponse
     {
-        $bids = BidResource::collection(Job::findOrFail($id)->bids()->orderBy('id','asc')->get());
+        $bids = BidResource::collection(Job::findOrFail($id)->bids()->orderBy('id', 'asc')->get());
 
         return response()->json($bids);
 
@@ -36,21 +36,40 @@ class BidController extends Controller
 
         $jobsBids = $job->bids;
 
-        foreach ($jobsBids as $lostBid)
-        {
+        foreach ($jobsBids as $lostBid) {
             $lostBid->update(['status' => 'Lost']);
             $lostBid->save();
         }
 
-        $job->update(['winner_id' => $bid->user_id]);
-        $job->save();
+        $job->update([
+            'winner_id' => $bid->user_id,
+            'status'    => 'In Progress'
+        ]);
 
         $bid->update([
             'status' => 'Won'
         ]);
-        $bid->save();
 
         return response()->json(['status' => 'good']);
+    }
+
+    public function update(BidFormRequest $request, Bid $bid): JsonResponse
+    {
+        $bid->update([
+            'date'      => $request->get('date'),
+            'money'     => $request->get('money'),
+            'few_words' => $request->get('few_words'),
+            'status'    => $request->get('status'),
+        ]);
+
+        return response()->json($bid);
+    }
+
+    public function myBids(Request $request): JsonResponse
+    {
+        $bids = BidResource::collection(Bid::all()->where('user_id', '=', $request->user()->id));
+
+        return response()->json($bids);
     }
 
     public function store(BidFormRequest $request): JsonResponse
@@ -68,8 +87,6 @@ class BidController extends Controller
             'few_words' => $request->get('few_words'),
             'user_id'   => $request->user()->id,
             'status'    => 'In Progress',
-
-
         ]);
 
         return response()->json(new BidResource($bid));
@@ -78,18 +95,6 @@ class BidController extends Controller
     public function show(Bid $bid): JsonResponse
     {
         return response()->json(new BidResource($bid));
-    }
-
-    public function update(BidFormRequest $request, Bid $bid): JsonResponse
-    {
-        $bid->update([
-            'date'      => $request->get('date'),
-            'money'     => $request->get('money'),
-            'few_words' => $request->get('few_words'),
-            'status'    => $request->get('status'),
-        ]);
-
-        return response()->json($bid);
     }
 
     public function destroy(Bid $bid): JsonResponse
