@@ -39,16 +39,12 @@ class UserController extends Controller
             $users[] = $subject;
         }
 
-//        $users = UserResource::collection($users);
-
         return response()->json($users);
     }
 
     public function update(UserFormRequest $request): JsonResponse
     {
         $user = $request->user();
-
-
 
         $user->update([
             'name'         => $request->get('name'),

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PayPalPaymentController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::controller(PayPalPaymentController::class)
      ->prefix('paypal')
@@ -11,3 +12,14 @@ Route::controller(PayPalPaymentController::class)
          Route::get('cancel-payment', 'paymentCancel')->name('cancel.payment');
          Route::get('payment-success', 'paymentSuccess')->name('success.payment');
      });
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return Redirect::to('http://zeusv.go.ro:3001/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
