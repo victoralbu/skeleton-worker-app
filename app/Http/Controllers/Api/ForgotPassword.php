@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -12,17 +13,16 @@ use Illuminate\Support\Str;
 
 class ForgotPassword extends Controller
 {
-    public function index(Request $request): array
+    public function index(Request $request): JsonResponse
     {
         $request->validate(['email' => 'required|email']);
 
         $status = Password::sendResetLink(
             $request->only('email')
         );
-
         return $status === Password::RESET_LINK_SENT
-            ? ['status' => 'good']
-            : ['status' => 'bad'];
+            ? response()->json(['status' => 'good'])
+            : response()->json(['email' => __($status)]);
     }
 
     public function reset(Request $request)
