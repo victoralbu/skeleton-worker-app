@@ -64,23 +64,45 @@ class JobController extends Controller
 
     public function myJobs(Request $request): JsonResponse
     {
-        $jobs = Job::where('winner_id','=', $request->user()->id)->get();
+        $jobs = Job::where('winner_id', '=', $request->user()->id)->get();
 
-       return response()->json($jobs);
+        return response()->json($jobs);
     }
 
-    public function finishJob(Request $request):JsonResponse
+    public function finishJob(Request $request): JsonResponse
     {
-        $job = Job::where('id','=',$request->get('job_id'));
+        $job = Job::where('id', '=', $request->get('job_id'));
 
         $job->update(['status' => 'Done']);
+
+        $user = $request->user();
+
+        $usersJobs = $request->user()->jobs_done;
+
+        $user->jobs_done = $usersJobs + 1;
+        $user->save();
 
         return response()->json(['status' => 'good']);
     }
 
+    public function update(JobFormRequest $request, Job $job): JsonResponse
+    {
+        $job->update([
+            'title'       => $request->get('name'),
+            'description' => $request->get('description'),
+            'level'       => $request->get('level'),
+            'budget'      => $request->get('budget'),
+            'address'     => $request->get('address'),
+            'city'        => $request->get('city'),
+            'status'      => $request->get('status'),
+        ]);
+
+        return response()->json($job);
+    }
+
     public function paid(Request $request)
     {
-        $job = Job::where('id','=', $request->get('job_id'));
+        $job = Job::where('id', '=', $request->get('job_id'));
         $job->update(['status' => 'Paid']);
 
         return response()->json(['status' => 'good']);
@@ -136,21 +158,6 @@ class JobController extends Controller
     {
         $job = Job::where('id', $id)->firstOrFail();
         return response()->json(new JobResource($job));
-    }
-
-    public function update(JobFormRequest $request, Job $job): JsonResponse
-    {
-        $job->update([
-            'title'       => $request->get('name'),
-            'description' => $request->get('description'),
-            'level'       => $request->get('level'),
-            'budget'      => $request->get('budget'),
-            'address'     => $request->get('address'),
-            'city'        => $request->get('city'),
-            'status'      => $request->get('status'),
-        ]);
-
-        return response()->json($job);
     }
 
     public function destroy(Job $job): JsonResponse
