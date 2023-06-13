@@ -47,8 +47,8 @@ class ForgotPassword extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? ['status' => 'good']
-            : ['status' => 'bad'];
+            ? response()->json(['status' => 'good'])
+            : response()->json(['status' => 'bad']);
     }
 
 }
