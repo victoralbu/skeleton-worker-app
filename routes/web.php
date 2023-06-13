@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PayPalPaymentController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -18,8 +19,12 @@ Route::get('/email/verify', function () {
 })->middleware('auth')->name('verification.notice');
 
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request): RedirectResponse {
     $request->fulfill();
 
     return Redirect::to('http://zeusv.go.ro:3001/');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('/auth/login', function () {
+    return Redirect::to('http://zeusv.go.ro:3001/');
+})->name('login');
