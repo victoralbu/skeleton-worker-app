@@ -22,7 +22,7 @@ class RateController extends Controller
 
         $userRatings = json_decode($userRated->ratings, true);
 
-        $userRatings[$user->id] = $rating;
+        $userRatings[$user->id . "|" .$request->get('job_id')] = $rating;
 
         $numberOfRatings = count(array_keys($userRatings));
 

@@ -24,6 +24,7 @@ class UserResource extends JsonResource
             'ratings_nr'   => $this->ratings_nr,
             'role'         => $this->role,
             'status'       => $this->status,
+            'verified'     => isset($this->email_verified_at)
         ];
     }
 }

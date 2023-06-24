@@ -33,8 +33,14 @@ class UserController extends Controller
                 $subject->amount = '';
             }
 
-
             $subject->status = $worker->status;
+
+            $ratings = json_decode($subject->ratings, true);
+
+            if (isset($ratings[$request->user()->id . "|" . $subject->job_id]))
+                $subject->canBeRated = false;
+            else
+                $subject->canBeRated = true;
 
             $users[] = $subject;
         }
