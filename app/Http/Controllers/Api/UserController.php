@@ -29,7 +29,7 @@ class UserController extends Controller
             $subject->job_id = $worker->id;
 
             if ($worker->status === 'Done') {
-                $subject->amount = Bid::where('job_id', '=', $worker->id)->first()->money;
+                $subject->amount = Bid::where('job_id', '=', $worker->id)->where('user_id', '=', $subject->id)->first()->money;
             } else {
                 $subject->amount = '';
             }
