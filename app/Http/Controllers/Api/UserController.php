@@ -26,9 +26,10 @@ class UserController extends Controller
         foreach ($workers as $worker) {
             $subject = User::where('id', $worker->winner_id)->first();
 
+            $subject->job_id = $worker->id;
+
             if ($worker->status === 'Done') {
                 $subject->amount = Bid::where('job_id', '=', $worker->id)->first()->money;
-                $subject->job_id = $worker->id;
             } else {
                 $subject->amount = '';
             }
